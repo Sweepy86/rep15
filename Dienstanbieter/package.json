@@ -1,0 +1,25 @@
+{
+  "name": "Dienstanbieter",
+  "version": "0.0.7",
+  "description": "Verleihdienst fuer Buecher",
+  "main": "js_provider_redis.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FretCode/WBA2SS15WuestlichStengelOeztuerk"
+  },
+  "author": "Wuestlich, Oeztuerk, Stengel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FretCode/WBA2SS15WuestlichStengelOeztuerk/issues"
+  },
+  "homepage": "https://github.com/FretCode/WBA2SS15WuestlichStengelOeztuerk",
+  "dependencies": {
+    "body-parser": "^1.12.4",
+    "express": "^4.12.4",
+    "redis": "^0.12.1"
+  },
+  "devDependencies": {}
+}
