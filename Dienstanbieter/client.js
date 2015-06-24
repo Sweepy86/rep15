@@ -2,31 +2,39 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var app = express();
-var context = require('rabbit.js').createContext('amqp://localhost'); //Rabbit.js Einbindung
 
-var context = new require('rabbit.js').createContext('amqp://localhost');
-var inServer = net.createServer(function(connection) {
-  var s = context.socket('PUB');
-  s.connect('incoming', function() {
-    connection.pipe(s);
-  });
-});
-inServer.listen(5000);
+var context = require('rabbit.js').createContext('amqp://localhost');
+var pub = context.socket('PUBLISH');
 
-//TODO User erstellen
-
-//TODO Buch erstellen
-
-//TODO Buch ausleihen
-
-
-/*context.on('ready', function() {
-  var pub = context.socket('PUB');
+context.on('ready', function() {
+  var pub = sub = context.socket('SUB');
   sub.pipe(process.stdout);
   sub.connect('events', function() {
-  sub.setEncoding('utf8');
-sub.on('data', function(note) { console.log("Alarum! %s", note); });
+      sub.setEncoding('utf8');
+       sub.on('data', function(note) { console.log("Alarum! %s", note); })
+        sub.end();
     });
+  });
+
+
+app.get('/', function(req,res){
+    res.sendStatus(200, 'OK');
+    console.log('Client erreichbar.');
 });
 
-//TODOS Messagequeue -> Buch verliehen, Buch gelehen, Buch zurückgegeben */
+function user(){
+}
+
+function message(){
+}
+
+function borrowed(){
+}
+
+function bookreturn(){
+}
+
+
+
+ console.log('Client is running, listening on Port 5000.')
+app.listen(5000);
