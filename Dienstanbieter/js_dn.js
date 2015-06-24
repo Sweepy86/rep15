@@ -187,11 +187,11 @@ app.put('/books/:id', jsonParser, function (req, res){ //Buch ausleihen
 			rep.send('Ausleihen fehlgeschlagen.');
 	});
 });
-app.delete('user/:id/books/?status=borrowed/:book_id', jsonParser(req, res){ //Buch zurückgeben
+/*app.delete('user/:id/books/?status=borrowed/:book_id', jsonParser(req, res)){ //Buch zurückgeben
 	client.del(req.params.id+':borrowed'+req.params.book_id, function(rep){
 		if(!rep) res.send(404);
 		else res.send(200);
 	});
 });
-
+*/
 app.listen(3000);
