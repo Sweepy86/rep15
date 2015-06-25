@@ -7,7 +7,9 @@ var client = redis.createClient();
 var app = express();
 
 
-
+app.get('/server', function(req, res) {
+    res.send(200+" Dienstanbieter in Betrieb").json();
+});
 app.get('/', function(req, res) {
 	res.sendStatus(200);
 });

@@ -4,9 +4,9 @@ var http = require('http');
 var app = express();
 
 var request = require('request');
-request('http://localhost:3000/server', function (error, response, body) {
+request('http://localhost:3000/connect_server', function (error, response, body) {
   if (!error && response.statusCode == 200) {
-    console.log(body) // Show the HTML for the Google homepage.
+    console.log(body) // 
   }
 });
 console.log('Anfrage ausgeführt');

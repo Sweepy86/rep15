@@ -1,0 +1,17 @@
+{
+   "book":[
+      {
+         "isbn":"123-123-123-98",
+         "title":"Das Buch",
+         "autor":"noname"
+      },
+      
+            {
+         "isbn":"123-123-123-99",
+         "title":"Das Buch Teil 2",
+         "autor":"noname"
+      }
+      
+      ]
+      
+}

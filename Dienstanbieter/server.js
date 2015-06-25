@@ -14,9 +14,13 @@ fs.readFile(__dirname + "/book/book.json", 'utf8', function (err, data){
 var book = JSON.parse(data.toString());
 
 console.log("Dienstanbieter gestartet");
-
-app.get('/server', function(req, res) {
+    
+app.get('/connect_server', function(req, res) {
     res.send(200+" Dienstanbieter und Dienstnutzer sind verbunden").json();
+});
+
+app.get('/', function(req, res) {
+    res.send(200+" Dienstanbieter in Betrieb").json();
 });
 
 app.get('/book', function(req, res){
@@ -55,10 +59,5 @@ fs.writeFile(__dirname + "/book/book.json", JSON.stringify(book), function(err, 
 });
 
 });
-
-// accept DELETE request at /user
-//app.delete('/book', function (req, res) {
-//  res.send('Got a DELETE request at /book');
-//});
 
 app.listen(3000);
