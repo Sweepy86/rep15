@@ -7,6 +7,10 @@ var client = redis.createClient();
 var app = express();
 
 
+
+app.get('/connect_server', function(req, res) {
+    res.send(200+" Dienstanbieter und Dienstnutzer sind verbunden").json();
+});
 app.get('/server', function(req, res) {
     res.send(200+" Dienstanbieter in Betrieb").json();
 });
@@ -184,11 +188,12 @@ app.put('/books/:id', jsonParser, function (req, res){ //Buch ausleihen
 			rep.send('Ausleihen fehlgeschlagen.');
 	});
 });
-app.delete('user/:id/books/?status=borrowed/:book_id', jsonParser(req, res){ //Buch zurückgeben
-	client.del(req.params.id+':borrowed'+req.params.book_id, function(rep){
+app.delete('user/:id/books/?status=borrowed/:book_id', jsonParser, function(req, res){ //Buch zurückgeben
+	client.del(req.params.id+'borrowed'+req.params.book_id, function(rep){
 		if(!rep) res.send(404);
 		else res.send(200);
 	});
-});
 
+});
+console.log('Server gestartet, Port 3000');
 app.listen(3000);
