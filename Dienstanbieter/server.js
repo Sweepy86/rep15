@@ -1,44 +1,64 @@
 var express = require('express');
-var http = require('http');
-var app = express();
 var bodyParser = require('body-parser');
-var jsonParser = bodyParser.json()
-var context = require('rabbit.js'); //Rabbit.js Einbindung
-  	console.log('Server starts');
-var context = require('rabbit.js').createContext('amqp://localhost');
-var pub = context.socket('PUBLISH');
+var jsonParser = bodyParser.json();
+var fs = require('fs');
 
-app.get('/', function(req, res) {
-	res.sendStatus(200);
-    console.log('Status:200 OK. Server ist erreichbar');
+var app = express();
+
+fs.readFile(__dirname + "/book/book.json", 'utf8', function (err, data){
+  if (err) {
+    console.log('Error: ' + err);
+    return;
+  }
+    
+var book = JSON.parse(data.toString());
+
+console.log("Dienstanbieter gestartet");
+
+app.get('/server', function(req, res) {
+    res.send(200+" Dienstanbieter und Dienstnutzer sind verbunden").json();
 });
 
-app.get('/testmes', function(req,res){
-context.on('ready', function() {
-  var pub = context.socket('PUB'), sub = context.socket('SUB');
-  sub.pipe(process.stdout);
-  sub.connect('events', function() {
-    pub.connect('events', function() {
-      pub.write(JSON.stringify({welcome: 'rabbit.js'}), 'utf8');
-        pub.end();
+app.get('/book', function(req, res){
+    res.status(200).json(book); //sendet die Daten der Ressource /book zurueck
+});
+
+    
+app.post('/book', jsonParser, function(req, res){
+         book.book.push(req.body);
+        fs.writeFile(__dirname + "/book/book.json", JSON.stringify(book), function(err, data){
+        if (err){
+        console.log('Error' + err);
+        return;
+        }
+        console.log("Datei wurde gesichert.");
+    res.send(200+" Buch wurde gespeichert").json();
+        
     });
-  });
-    res.sendStatus(201);
-});
+    //res.type('plain').send('Hinzugefügt');
 });
 
-//message servertest
-app.get('/messages', function(req,res){
-        res.sendStatus(503);
 
-context.on('ready', function() {
-  var pub = context.socket('PUB');
-    pub.connect('events', function() {
-      pub.write(JSON.stringify({welcome: 'rabbit.js'}), 'utf8');
-	  pub.end();
+app.put('/book', jsonParser, function(req, res){
+//hier neu - Datei ueberschreiben
+    book.book = req.body; 
+fs.writeFile(__dirname + "/book/book.json", JSON.stringify(book), function(err, data){
+        if (err){
+        console.log('Error' + err);
+        return;
+        }
+        console.log("Datei wurde gesichert.");
+    res.send(200+" Buch wurde gespeichert").json();
+        
     });
-  });
 
 });
+
+});
+
+// accept DELETE request at /user
+//app.delete('/book', function (req, res) {
+//  res.send('Got a DELETE request at /book');
+//});
 
 app.listen(3000);

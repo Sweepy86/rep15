@@ -1,32 +1,13 @@
-var context = require('rabbit.js').createContext('amqp://localhost:3000');
+var express = require('express');
+var http = require('http');
 
-context.on('ready', function() {
-  var express = require('express');
-  var http = require('http');
-  var app = express();
-  var sub = context.socket('SUB');
-  var pub = context.socket('PUB'); 
-  sub.pipe(process.stdout);
-  sub.connect('events', function() {
-      sub.setEncoding('utf8');
-       sub.on('data', function(note) { console.log("Alarum! %s", note); })
-        sub.end();
-    });
-    console.log('Client is running, listening on Port 5000.')
-app.listen(5000);
-  });
+var app = express();
 
-function user(){
-}
-
-function message(){
-}
-
-function borrowed(){
-}
-
-function bookreturn(){
-}
-
-
-
+var request = require('request');
+request('http://localhost:3000/server', function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    console.log(body) // Show the HTML for the Google homepage.
+  }
+});
+console.log('Anfrage ausgeführt');
+app.listen(3001);
