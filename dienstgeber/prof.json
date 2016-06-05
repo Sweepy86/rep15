@@ -1,0 +1,14 @@
+{
+  "profs":[
+    {
+      "id":"pf3",
+	    "name":"Prof. Clever",
+	    "workshops":"erstellte Workshops"
+    },
+    {
+      "id":"pf4",
+      "name":"Prof. Kreativ",
+      "workshops":"erstellte Workshops"
+    }
+  ]
+}

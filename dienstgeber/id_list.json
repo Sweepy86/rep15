@@ -1,0 +1,24 @@
+{
+  "id_list":[
+    {
+      "status":"student",
+      "id":0
+    }
+    {
+      "status":"prof",
+      "id":0
+    }
+    {
+      "status":"workshop",
+      "id":0
+    }
+    {
+      "status":"msg",
+      "id":0
+    }
+    {
+      "status":"student",
+      "id":0
+    }
+  ]
+}

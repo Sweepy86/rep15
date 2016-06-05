@@ -1,0 +1,11 @@
+{
+  "msg":[
+    {
+      "id":"wird bei der Erstellung eingefügt",
+      "workshop":"Zur Nachricht gehörender Workshop",
+	    "Inhalt":"...",
+	    "Zeit":"Erstellungszeit der Nachricht",
+	    "Anhang":"evtl wichtige Daten"
+    }
+  ]
+}

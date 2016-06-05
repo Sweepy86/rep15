@@ -1,0 +1,20 @@
+{
+  "students":[
+    {
+      "id":"mi1",
+	    "name":"Tim Torte",
+	    "m_id":"4711",
+	    "field":"MI",
+	    "precon":"Voraussetzungen, die der Student erfüllt",
+	    "workshops":"angemeldete Workshops"
+    },
+          {
+      "id":"mi2",
+	    "name":"Lena Laune",
+	    "m_id":"4711",
+	    "field":"MI",
+	    "precon":"Voraussetzungen, die der Student erfüllt",
+	    "workshops":"angemeldete Workshops"
+    }
+   ]
+}

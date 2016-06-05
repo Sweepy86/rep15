@@ -6,7 +6,7 @@ var app = express();
 var request = require('request');
 var net = require('net');
 
-var amqp = require('amqp');
+
 var sys = require('sys');
 
 console.log('Dienstnutzer wurde gestartet. Lauscht auf 3001');
@@ -18,7 +18,7 @@ request('http://localhost:3000/connect_server', function (error, response, body)
     console.log(body);
   }
   if(error){
-      console.log('Status:'+503+' Server nicht verfügbar');
+      console.log('Status:'+503+' Server nicht verfügbar');cl	
   }
 });
 

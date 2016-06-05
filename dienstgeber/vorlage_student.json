@@ -1,0 +1,12 @@
+{
+  "students":[
+    {
+      "id":"",
+	    "name":"...",
+	    "m_id":"Matrikelnummer",
+	    "field":"Studiengang",
+	    "precon":"Voraussetzungen, die der Student erfüllt",
+	    "workshops":"angemeldete Workshops"
+    }
+   ]
+}

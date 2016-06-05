@@ -1,0 +1,16 @@
+{
+  "Workshops":[
+    {
+      "id":"",
+	    "title":"Titel",
+      "creator":"zugehöriger Prof",
+	    "desc":"Beschreibung",
+	    "precon":"Voraussetzungen für den workshop",
+	    "maxcount":"maximale Teilnehmerzahl",
+	    "keywords":"Schlüsselwörter für die Suche",
+	    "info":"Info für die Teilnehmer(Sammlung an Nachrichten)",
+	    "runtime":"Laufzeit des Workshops",
+	    "date":"Erstellungsdatum"
+      },
+   ]
+}
