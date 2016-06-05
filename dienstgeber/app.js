@@ -1,3 +1,4 @@
+
 var parser = require('body-parser');
 var jsonp = parser.json();
 var express = require('express');
@@ -22,7 +23,7 @@ app.route('/user')
       var prof = JSON.parse(fs.readFileSync('prof.json'));
       var user = student.students.concat(prof.profs);
 
-      res.type('application/json').status(200).send(user);
+      res.status(200).send(user);
       res.end();
       console.log("Die User-Liste wurde ausgegeben.");
     }
@@ -51,18 +52,14 @@ app.route('/user')
       res.send('User ist weder Student noch Prof!');
     }
   })
-  .delete();
+  .delete()
 
 app.route('/user/prof')
 .get(jsonp, function(req, res){
 try{
 var prof = JSON.parse(fs.readFileSync(__dirname+"/prof.json"));
-res.format({
-  'application/json' :function(){
-    res.type('application/json').status(200).send(prof);
-  }
-})
 
+res.status(200).send(prof);
 res.end();
 console.log(chalk.green("Die Professoren-Liste wurde ausgegeben."));
 }
@@ -83,13 +80,13 @@ app.route('/user/prof/:id')
       var prof = getObjByID(profs, id);
       if(prof===undefined){
         console.log(chalk.red('User nicht gefunden'));
-        res.status(404).send('User nicht gefunden.');
+        res.status(404).end();
         }
         else{
           console.log(chalk.green('User gefunden:'));
           console.log(prof);
           console.log(' ');
-          res.type('application/json').status(200).json(prof).end();
+          res.status(200).json(prof).end();
         }
     }
     catch(err){
@@ -168,7 +165,7 @@ app.route('/user/student')
 try{
 var student = JSON.parse(fs.readFileSync(__dirname+"/student.json"));
 
-res.type('application/json').status(200).send(student);
+res.status(200).send(student);
 res.end();
 console.log(chalk.green("Die Studenten-Liste wurde ausgegeben."));
 }
@@ -189,13 +186,13 @@ app.route('/user/student/:id')
     var student = getObjByID(students, id);
     if(student===undefined){
       console.log(chalk.red('User nicht gefunden'));
-        res.status(404).send('User nicht gefunden.');
+      res.status(404).end();
       }
     else{
       console.log(chalk.green('User gefunden:'));
       console.log(student);
       console.log(' ');
-      res.type('application/json').status(200).json(student).end();
+      res.status(200).json(student).end();
     }
   }
   catch(err){
@@ -244,10 +241,7 @@ catch(err){
   res.end();
 }
 })
-  .post(jsonp, function(req, res){
-    console.log(chalk.red('/user/student/:id POST nicht belegt'));
-  res.status(501).send("/user/student/:id POST not use");
-  })
+  .post()
   .delete(jsonp, function(req, res){
     if(spw(req.params.id)==2) {
       var students = JSON.parse(fs.readFileSync(__dirname+"/student.json")).students;
@@ -345,7 +339,22 @@ app.route('/workshop/:uid/msg/:mid')
      })
    })
    .put()
-   .post()
+   .post(jsonp, function(req, res){
+     var file = JSON.parse(fs.readFileSync(__dirname+"/workshops_teilnehmer.json"));
+     file.Workshops.forEach(function (workshop, index) {
+       if (workshop.id === req.body.id) {
+           console.log(workshop.id + " ist bereits vorhanden!");
+           res.status(200);
+           res.send("Dieser Workshop ist bereits vorhanden!");
+           throw new Error("Workshop " + workshop.id + " ist bereits vorhanden!");
+       }
+     })
+     file.Workshops.push(req.body);
+     fs.writeFileSync(__dirname+"/workshops_teilnehmer.json", JSON.stringify(file));
+     console.log(req.body.id + "wurde erfolgreich erstellt!");
+     res.status(200);
+     res.send(req.body.id + "wurde erfolgreich erstellt!")
+    })
     .delete(jsonp, function(req, res){
       rm(req.params.wid,"workshops_teilnehmer.json");
       console.log(req.params.wid + " erfolgreich gelöscht!");
@@ -356,24 +365,40 @@ app.route('/workshop/:uid/msg/:mid')
     app.route('/workshop/:wid/teilnehmer/:id')
     .get()
     .put()
-    .post()
+    .post(jsonp, function(req, res){
+      var flag = 0;
+      var file = JSON.parse(fs.readFileSync(__dirname+"/workshops_teilnehmer.json"));
+
+
+        file.Workshops.forEach(function (workshop, index) {
+          if (workshop.id === req.params.wid) {
+            flag=1;
+            var n=workshop.subscribers.find(subscribers => workshop.subscribers === req.params.id);
+            console.log(n);
+          }
+        })
+
+        if (flag!=1) {
+          throw new Error("Workshop " + req.params.wid + " ist nicht vorhanden!");
+        }
+
+
+      file.Workshops.forEach(function (workshop, index) {
+        if (workshop.id === req.params.wid) {
+          workshop.subscribers.push(req.params.id);
+          fs.writeFileSync(__dirname+"/workshops_teilnehmer.json", JSON.stringify(file));
+        }
+      })
+    })
     .delete(jsonp, function(req, res){
          var file = JSON.parse(fs.readFileSync(__dirname+"/workshops_teilnehmer.json"));
-         //var n=file.Workshops.indexOf("teilnehmer");
-         var n=file.Workshops.find(element, "ws22");
-         console.log(n);
+         var list = file.Workshops.find(workshop => workshop.id === req.params.wid);
+         list.subscribers = list.subscribers.filter(e => e !== req.params.id);
+         fs.writeFileSync(__dirname+"/workshops_teilnehmer.json", JSON.stringify(file));
          console.log(file);
-        // console.log(n);
-
-         file.Workshops.forEach(function (workshop, index) {
-           if (workshop.id === req.params.wid) {
-
-             //delete file.Workshops[1];
-           }
-         })
-
-
-        // console.log(file);
+         console.log(req.params.id + " wurde erfolgreich aus " + req.params.wid + " gelöscht!");
+         res.status(200);
+         res.send(req.params.id + " wurde erfolgreich aus " + req.params.wid + " gelöscht!");
     });
 
 
@@ -487,21 +512,8 @@ var changeUser = function(user, change_user, index){
     console.log('hier wird ein Professor geändert');
     //ändern spezieller Eigenschaften hier eintragen
   }
-
-
-
-  /*
-  //console.log('Ausgabe Workshop: ' + user.workshops);
-
-  //prof oder nicht? -> experimentell
-  var res = user.id.charAt(0);
-  console.log(res);
-  if(res = 'p'){
-      if(user.workshops!= newuser.workshops){
-        user.workshops = newuser.workshops;
-        }
-      }*/
-      return user;
+  return user;
 }
+
 
 app.listen(1337);
